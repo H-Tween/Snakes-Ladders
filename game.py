@@ -72,8 +72,13 @@ def setTheme(themeChoice):
 
 root = Tk()
 root.geometry('1920x1080') 	# creates a window 
+
+filename = PhotoImage(file = ".\\background.png")
+background_label = Label(root, image=filename)
+background_label.place(x=0, y=0, relwidth=1, relheight=1)
+
 playButton = Button(root, text = "Play", font = ("Calibri", 40), background = rgbToColour((37, 213, 219)),
                     activebackground = rgbToColour((41, 236, 242)), command = ChoosePlayer) # creates a button called play that begins the game
 playButton.place(x=810, y=300, height = 100, width = 300)	# placement of the button
 
-
+root.mainloop()
