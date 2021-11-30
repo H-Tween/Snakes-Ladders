@@ -1,4 +1,5 @@
 from tkinter import *
+from PIL import Image, ImageTk
 
 def rgbToColour(rgb):			# allows any colour variation to become rgb colour
     return "#%02x%02x%02x" % rgb
@@ -72,13 +73,41 @@ def setTheme(themeChoice):
 
 root = Tk()
 root.geometry('1920x1080') 	# creates a window 
+root.configure(background="black")
 
-filename = PhotoImage(file = ".\\background.png")
-background_label = Label(root, image=filename)
-background_label.place(x=0, y=0, relwidth=1, relheight=1)
+#filename = PhotoImage(file = ".\\background.png")
+#background_label = Label(root, image=filename)
+#background_label.place(x=0, y=0, relwidth=1, relheight=1)
+
+class Example(Frame):
+    def __init__(self, master, *pargs):
+        Frame.__init__(self, master, *pargs)
+
+        self.image = Image.open(".\\background.png")
+        self.img_copy= self.image.copy()
+
+        self.background_image = ImageTk.PhotoImage(self.image)
+
+        self.background = Label(self, image=self.background_image)
+        self.background.pack(fill=BOTH, expand=YES)
+        self.background.bind('<Configure>', self._resize_image)
+
+    def _resize_image(self,event):
+
+        new_width = event.width
+        new_height = event.height
+
+        self.image = self.img_copy.resize((new_width, new_height))
+
+        self.background_image = ImageTk.PhotoImage(self.image)
+        self.background.configure(image =  self.background_image)
+
+e = Example(root)
+e.pack(fill=BOTH, expand=YES)
 
 playButton = Button(root, text = "Play", font = ("Calibri", 40), background = rgbToColour((37, 213, 219)),
                     activebackground = rgbToColour((41, 236, 242)), command = ChoosePlayer) # creates a button called play that begins the game
 playButton.place(x=810, y=300, height = 100, width = 300)	# placement of the button
+
 
 root.mainloop()
