@@ -1,0 +1,121 @@
+from tkinter import *
+
+def rgbToColour(rgb):			# allows any colour variation to become rgb colour
+    return "#%02x%02x%02x" % rgb
+
+def ChoosePlayer():
+    playButton.destroy()		# removes the button "play"
+    global computerButton, playerButton
+    computerButton=Button(root, text = "Against Computer", font = ("Calibri", 40), background = rgbToColour((37, 213, 219)),
+                          activebackground = rgbToColour((41, 236, 242)), command = lambda:[setVs('Computer'), Theme()])# creates a button named "Against Computer"
+    computerButton.place(x=660, y=500, height = 100, width =600)			# places the button in a certain position
+    playerButton = Button(root, text = "Against Player", font = ("Calibri", 40), background = rgbToColour((37, 213, 219)),
+                          activebackground = rgbToColour((41, 236, 242)), command = lambda:[setVs('Player'), Theme()])	# creates a button named "Against Player"
+    playerButton.place(x=660, y=300, height = 100, width =600)				# places the button in a certain position												
+
+def setVs(vsChoice):
+    global vs
+    vs = vsChoice
+    ##print (vs)
+
+
+def Theme():
+    computerButton.destroy()    #removes the previous buttons
+    playerButton.destroy()
+    global title1, jungleButton, desertButton, volcanicButton    #allows the variables to be used in other functions
+    title1 = Label(root, text = "Themes:",  font = ("Calibri", 48)) #creates title
+    title1.place(x=810, y=75, height = 100, width = 300)            #places title
+    volcanicButton = Button(root, text = "Volcanic", font = ("Calibri", 40), background = rgbToColour((37, 213, 219)),
+                            activebackground = rgbToColour((41, 236, 242)), command = lambda:[setTheme('volcanic'), ColourCounter()]) #creates button for volcanic
+    volcanicButton.place(x=735, y=250, height = 100, width =450)                                                                      #places button volcanic                                          
+    jungleButton = Button(root, text = "Jungle", font = ("Calibri", 40), background = rgbToColour((37, 213, 219)),          
+                            activebackground = rgbToColour((41, 236, 242)), command = lambda:[setTheme('jungle'), ColourCounter()]) #creates button for jungle
+    jungleButton.place(x=735, y=400, height = 100, width =450)                                                                      #places button jungle
+    desertButton = Button(root, text = "Desert", font = ("Calibri", 40), background = rgbToColour((37, 213, 219)),
+                            activebackground = rgbToColour((41, 236, 242)), command = lambda:[setTheme('desert'), ColourCounter()]) #creates button for desert
+    desertButton.place(x=735, y=550, height = 100, width =450)                                                                      #places button desert
+
+def setTheme(themeChoice):
+    global theme
+    theme = themeChoice 
+    ##print(theme)
+
+def ColourCounter():
+    volcanicButton.destroy()
+    jungleButton.destroy()      #removes previous buttons
+    desertButton.destroy()
+    title1.destroy()
+    global title2, redButton, blueButton, greenButton, yellowButton, purpleButton, blackButton
+    title2 = Label(root, text = "Colour Counter:",  font = ("Calibri", 48)) #creates title
+    title2.place(x=710, y=75, height = 100, width = 500)            #places title
+    redButton = Button(root, text = "Red", font = ("Calibri", 40), background = rgbToColour((230, 21, 37)),
+                            activebackground = rgbToColour((255, 0, 20)), command = lambda:[setColour('Red'), Board()])                                         #red 
+    redButton.place(x=100, y=300, height=100, width=200)
+    blueButton = Button(root, text = "Blue", font = ("Calibri", 40), background = rgbToColour((18, 170, 230)),
+                            activebackground = rgbToColour((0, 183, 255)), command = lambda:[setColour('Blue'), Board()])                                           #blue252, 141, 30
+    blueButton.place(x=400, y=300, height=100, width=200)
+    greenButton = Button(root, text = "Green", font = ("Calibri", 40), background = rgbToColour((33, 214, 13)),
+                            activebackground = rgbToColour((27, 245, 2)), command = lambda:[setColour('Green'), Board()])                                        #green 0, 183, 255
+    greenButton.place(x=700, y=300, height=100, width=200)
+    yellowButton = Button(root, text = "Orange", font = ("Calibri", 40), background = rgbToColour((235, 120, 5)),
+                            activebackground = rgbToColour((255, 127, 0)), command = lambda:[setColour('Orange'), Board()])                                       #orange235, 120, 5
+    yellowButton.place(x=1000, y=300, height=100, width=200)
+    purpleButton = Button(root, text = "Purple", font = ("Calibri", 40), background = rgbToColour((181, 6, 204)),
+                            activebackground = rgbToColour((226, 3, 255)), command = lambda:[setColour('Purple'), Board()])                                       #purple
+    purpleButton.place(x=1300, y=300, height=100, width=200)
+    blackButton = Button(root, text = "Pink", font = ("Calibri", 40), background = rgbToColour((212, 19, 128)),
+                            activebackground = rgbToColour((235, 16, 140)), command = lambda:[setColour('Black'), Board()])                                        #pink 255, 31, 236
+    blackButton.place(x=1600, y=300, height=100, width=200)
+    
+    
+
+
+
+def setColour(colourChoice):
+    global colour
+    colour = colourChoice
+    #print(colour)
+
+
+def Board():
+    tilewidth = 80
+ #   print(theme)
+    filename = PhotoImage(file = "%s.png" % (theme))
+    background_label = Label(root, image=filename)
+    background_label.place(x=0, y=0, relwidth=1, relheight=1)
+
+    myCanvas = Canvas(root, bg='white', height=800, width=800)
+    myCanvas.place(x=50, y=50)
+
+
+    for row in range(10): # for each row
+        for column in range(10): # for each column
+            coordinates = [(column*tilewidth), (row*tilewidth), (column*tilewidth)+tilewidth, (row*tilewidth)+tilewidth] # coordinates of each tile
+            if (row+column) % 2 == 0: # draws the tile with a checkerboard pattern
+                tileColour = rgbToColour((12, 171, 17)) # sets colour to white
+            else:
+                tileColour = rgbToColour((102, 73, 4)) # sets colour to blue
+            myCanvas.create_rectangle(coordinates, fill=tileColour, outline=tileColour) # draws the tile
+            if row % 2 == 0: #if the row is even
+                number = 100-((column)+(row*10))    #the number displayed within the box is 10x whe row it is in + the coloumn number. Then 100- flips the entire board into the correct position
+            else:           #if the row is odd
+                number = 100-((10-column)+(row*10)-1) #the same happens again but the order is flipped as it goes in the reverse order
+            
+            myCanvas.create_text((column*tilewidth)+(tilewidth/2), (row*tilewidth)+(tilewidth/2), text=number, font='Calibri 20')
+            
+
+
+root = Tk()
+
+filename = PhotoImage(file = "work2.png")
+background_label = Label(root, image=filename)
+background_label.place(x=0, y=0, relwidth=1, relheight=1)
+
+
+root.geometry('1920x1080') 	# creates a window 
+playButton = Button(root, text = "Play", font = ("Calibri", 40), background = rgbToColour((37, 213, 219)),
+                    activebackground = rgbToColour((41, 236, 242)), command = ChoosePlayer) # creates a button called play that begins the game
+playButton.place(x=810, y=300, height = 100, width = 300)	# placement of the button
+
+
+root.mainloop()
