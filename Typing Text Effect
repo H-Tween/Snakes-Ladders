@@ -1,0 +1,30 @@
+from tkinter import *
+import time,os,sys,random
+
+def facts():
+    fact = ["fact1", "fact2", "fact3"]
+    randomNumber = random.randint(1, len(fact))
+    factsLabel = Label(root, text = "Cool Facts:\n" + typingPrint(fact[randomNumber-1]), font = ("Calibri", 48))
+    factsLabel.place(x=1110, y=300, height = 400, width = 800)
+                    
+
+def typingPrint(text):
+  for character in text:
+    sys.stdout.write(character)
+    sys.stdout.flush()
+    time.sleep(0.05)
+    return character
+
+##def typingPrint2(text_):
+##    #global label
+##    #label.config(text=label.cget('text') + text_[0])
+##    #typingPrint2(text_[1:])
+##    print(typingPrint2(text_[1:]))
+##    time.sleep(1)
+
+
+
+
+root = Tk()
+root.geometry('1920x1080')
+facts()
